@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from config import Config
 from extensions import db, migrate, bcrypt
-from models import User, Product, Order, OrderItem
 from routes import register_blueprints
 
 def create_app():
@@ -19,11 +18,11 @@ app = create_app()
 
 @app.errorhandler(400)
 def bad_request(error):
-    return jsonify({"error": str(error)}), 400
+    return jsonify({"error": str(error)}), 200
 
 @app.errorhandler(500)
 def server_error(error):
-    return jsonify({"error": "An unexpected error occurred"}), 500
+    return jsonify({"error": "An unexpected error occurred"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

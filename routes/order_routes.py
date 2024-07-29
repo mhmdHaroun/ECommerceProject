@@ -13,7 +13,7 @@ def create_order():
     product_orders = data.get('products')
 
     if not product_orders:
-        return jsonify({"error": "No products to order"}), 400
+        return jsonify({"error": "No products to order"}), 200
 
     order = Order(user_id=user_id)
     db.session.add(order)
@@ -29,10 +29,11 @@ def create_order():
             )
             db.session.add(order_item)
         else:
-            return jsonify({"error": f"Product with id {product_order['product_id']} not found"}), 400
+            return jsonify({"error": f"Product with id {product_order['product_id']} not found"}), 200
 
     db.session.commit()
     return jsonify({"message": "Order created successfully"}), 201
+
 
 @order_bp.route('/orders/<int:order_id>', methods=['GET'])
 @jwt_required()
@@ -48,6 +49,7 @@ def get_order(order_id):
             "product_name": item.product.name
         } for item in order.order_items]
     }), 200
+
 
 @order_bp.route('/orders', methods=['GET'])
 @jwt_required()

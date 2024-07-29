@@ -5,3 +5,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'mosalehsecretKey'     #i used short admin token just to make testing simple but provided tokenes are much much longer  
     JWT_SECRET_KEY = 'mosalehsecretKey'
+    
