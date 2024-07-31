@@ -9,7 +9,7 @@ product_bp = Blueprint('product', __name__)
 
 @product_bp.errorhandler(NotFound)
 def not_found(error):
-    return jsonify({"error": "Product not found"}), 200
+    return jsonify({"error": "Product not found"}), 400
 
 
 @product_bp.route('/products', methods=['GET'])
@@ -43,12 +43,12 @@ def create_product():
     stock = data.get('stock')
 
     if not (name and price and stock):
-        return jsonify({"error": "Name, price, and stock are required"}), 200
+        return jsonify({"error": "Name, price, and stock are required"}), 400
 
     product = Product(name=name, description=description, price=price, stock=stock)
     db.session.add(product)
     db.session.commit()
-    return jsonify({"message": "Product created successfully"}), 201
+    return jsonify({"message": "Product created successfully"}), 401
 
 
 

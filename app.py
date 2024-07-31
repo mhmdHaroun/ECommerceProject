@@ -18,11 +18,11 @@ app = create_app()
 
 @app.errorhandler(400)
 def bad_request(error):
-    return jsonify({"error": str(error)}), 200
+    return jsonify({"error": str(error)}), 400
 
 @app.errorhandler(500)
 def server_error(error):
-    return jsonify({"error": "An unexpected error occurred"}), 200
+    return jsonify({"error": "An unexpected error occurred"}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

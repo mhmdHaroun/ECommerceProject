@@ -31,7 +31,7 @@ def register():
     data = request.get_json()
 
     if not data:
-        return jsonify({"error": "Invalid input"}), 200
+        return jsonify({"error": "Invalid input"}), 400
 
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -40,16 +40,16 @@ def register():
     password = data.get('password')
 
     if not (first_name and last_name and email and phone_number and password):
-        return jsonify({"error": "All fields are required"}), 200
+        return jsonify({"error": "All fields are required"}), 400
     
     if not is_valid_email(email):
-        return jsonify({"error": "Invalid email format"}), 200
+        return jsonify({"error": "Invalid email format"}), 400
 
     if User.query.filter_by(email=email).first():
-        return jsonify({"error": "Email is already registered"}), 200
+        return jsonify({"error": "Email is already registered"}), 400
     
     if not is_strong_password(password):
-        return jsonify({"error": "Enter stronger Password"}), 200
+        return jsonify({"error": "Enter stronger Password"}), 400
 
     user = User(
         first_name=first_name,
@@ -65,7 +65,7 @@ def register():
         return jsonify({"message": "User registered successfully"}), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 200
+        return jsonify({"error": str(e)}), 400
 
 
 @user_bp.route('/login', methods=['POST'])
@@ -75,14 +75,14 @@ def login():
     password = data.get('password')
 
     if not (email and password):
-        return jsonify({"error": "Email and password are required"}), 200
+        return jsonify({"error": "Email and password are required"}), 400
 
     user = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
         access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token), 200
     else:
-        return jsonify({"error": "Invalid email or password"}), 200
+        return jsonify({"error": "Invalid email or password"}), 400
 
 
 @user_bp.route('/profile', methods=['GET'])
@@ -97,6 +97,6 @@ def profile():
             "phone_number": user.phone_number
         }), 200
     else:
-        return jsonify({"error": "User not found"}), 200
+        return jsonify({"error": "User not found"}), 400
     
 

@@ -13,7 +13,7 @@ def create_order():
     product_orders = data.get('products')
 
     if not product_orders:
-        return jsonify({"error": "No products to order"}), 200
+        return jsonify({"error": "No products to order"}), 400
 
     order = Order(user_id=user_id)
     db.session.add(order)
@@ -29,7 +29,7 @@ def create_order():
             )
             db.session.add(order_item)
         else:
-            return jsonify({"error": f"Product with id {product_order['product_id']} not found"}), 200
+            return jsonify({"error": f"Product with id {product_order['product_id']} not found"}), 400
 
     db.session.commit()
     return jsonify({"message": "Order created successfully"}), 201
